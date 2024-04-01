@@ -24,11 +24,25 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
     tamA++;
     tamB++;
 
+    for(int fila=0; fila < tamA; fila++){
+      for(int columna=0; columna<tamB; columna++){
+        if(CadenaA[fila]==CadenaB[columna]){
+          cout << "*\t";
+        }
+        else{
+          cout<<" \t";
+        }
+      }
+      cout<<endl;
+    }
+
+    cout<<endl;
+  
     //int Matriz[tamA][tamB];
       vector<vector<int>> Matriz(tamA, vector<int>(tamB));
   vector<vector<vector<Direction>>> Direcciones(tamA, vector<vector<Direction>>(tamB));
 
-
+    
     int menos_hor = -2;
     int menos_vert = -2;
 
@@ -75,14 +89,14 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
     }
 
 
-    // // Imprimimos la matriz de puntuaciones
-    // cout << "Matriz de puntuaciones:" << endl;
-    // for(int i = 0; i < tamA; i++) {
-    //     for(int j = 0; j < tamB; j++) {
-    //         cout << Matriz[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
+    // Imprimimos la matriz de puntuaciones
+    cout << "Matriz de puntuaciones:" << endl;
+    for(int i = 0; i < tamA; i++) {
+        for(int j = 0; j < tamB; j++) {
+            cout << Matriz[i][j] << "\t";
+        }
+        cout << endl;
+    }
 
     // // Imprimimos la matriz de direcciones
     // cout << endl << "Matriz de direcciones:" << endl;
