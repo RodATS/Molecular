@@ -10,6 +10,7 @@ struct Alignment {
     string sequenceA;
     string sequenceB;
     int score;
+    int peso;
 };
 
 int Max(int arriba, int esquina, int izquierda) {
@@ -37,8 +38,8 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
     }
 
     cout<<endl;
+
   
-    //int Matriz[tamA][tamB];
       vector<vector<int>> Matriz(tamA, vector<int>(tamB));
   vector<vector<vector<Direction>>> Direcciones(tamA, vector<vector<Direction>>(tamB));
 
@@ -117,11 +118,11 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
     // Función para encontrar todas las alineaciones posibles
     vector<Alignment> alignments;
 
-    function<void(string, string, int, int, string, string, int)> backtrack = [&](string seqA, string seqB, int row, int col, string newSeqA, string newSeqB, int score) {
+    function<void(string, string, int, int, string, string, int, int)> backtrack = [&](string seqA, string seqB, int row, int col, string newSeqA, string newSeqB, int score, int peso) {
         if (row == 0 && col == 0) {
             reverse(seqA.begin(), seqA.end());
             reverse(seqB.begin(), seqB.end());
-            alignments.push_back({seqA, seqB, score});
+            alignments.push_back({seqA, seqB, score, peso});
             return;
         }
 
@@ -131,6 +132,7 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
             int newRow = row;
             int newCol = col;
             int newScore = score;
+            int newPeso = peso;
 
             if (dir == DIAGONAL) {
                 updatedSeqA += CadenaA[row-1]; // Ajustamos los índices
@@ -138,6 +140,7 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
                 newRow--;
                 newCol--;
                 newScore += (CadenaA[row-1] == CadenaB[col-1]) ? 1 : -1; // Ajustamos los índices
+                
             } else if (dir == UP) {
                 updatedSeqA += CadenaA[row-1]; // Ajustamos los índices
                 updatedSeqB += '-';
@@ -150,29 +153,34 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
                 newScore -= 2;
             }
 
+            newPeso += Matriz[row][col];
+
             backtrack(seqA + (updatedSeqA.back() == '-' ? "-" : string(1, CadenaA[row-1])), 
                       seqB + (updatedSeqB.back() == '-' ? "-" : string(1, CadenaB[col-1])),
-                      newRow, newCol, updatedSeqA, updatedSeqB, newScore);
+                      newRow, newCol, updatedSeqA, updatedSeqB, newScore, newPeso);
         }
     };
 
-  backtrack("", "", tamA-1, tamB-1, "", "", 0);
+  backtrack("", "", tamA-1, tamB-1, "", "", 0, 0);
  // Ajustamos los índices para empezar desde el último elemento
 
+
+    
     // Mostrar todas las alineaciones
     cout << "Alineaciones Posibles:" << endl;
     for (const auto& alignment : alignments) {
         cout << "Secuencia A: " << alignment.sequenceA << endl;
         cout << "Secuencia B: " << alignment.sequenceB << endl;
         cout << "Score: " << alignment.score << endl << endl;
+        cout<< "PESO: " << alignment.peso << endl << endl;
     }
 }
 
 
 
 int main() {
-    //string CadenaA = "AAAC", CadenaB = "AGC";
-    string CadenaA = "tcaagcgttagagaagtcat", CadenaB = "attaaaggtttataccttcc";
+    string CadenaA = "AAAC", CadenaB = "AGC";
+    //string CadenaA = "tcaagcgttagagaagtcat", CadenaB = "attaaaggtttataccttcc";
 
     //string CadenaA = "attaaaggtttataccttcccaggtaacaa", CadenaB = "atggaagcaatatcactgatgactatacta";
 
