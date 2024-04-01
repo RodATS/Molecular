@@ -13,6 +13,11 @@ struct Alignment {
     int peso;
 };
 
+// Función para comparar dos estructuras Alignment por peso
+bool compareByPeso(const Alignment &a, const Alignment &b) {
+    return a.peso < b.peso;
+}
+
 int Max(int arriba, int esquina, int izquierda) {
     int max = arriba;
     if (max < esquina) max = esquina;
@@ -161,21 +166,35 @@ void Needleman(string CadenaA, string CadenaB, int tamA, int tamB) {
         }
     };
 
+
+
+   // Ajustamos los índices para empezar desde el último elemento
   backtrack("", "", tamA-1, tamB-1, "", "", 0, 0);
- // Ajustamos los índices para empezar desde el último elemento
 
 
     
     // Mostrar todas las alineaciones
-    cout << "Alineaciones Posibles:" << endl;
+
+    // Ordenar el vector por el campo peso de menor a mayor
+    sort(alignments.begin(), alignments.end(), compareByPeso);
+
+  
+    cout << "\nAlineaciones Posibles:" << endl;
     for (const auto& alignment : alignments) {
         cout << "Secuencia A: " << alignment.sequenceA << endl;
         cout << "Secuencia B: " << alignment.sequenceB << endl;
-        cout << "Score: " << alignment.score << endl << endl;
+        cout << "Score: " << alignment.score << endl;
         cout<< "PESO: " << alignment.peso << endl << endl;
     }
-}
 
+    cout<< "\n---------\nAlineacion optima:\n";
+    
+    cout << "Secuencia A: " << alignments.begin()->sequenceA << endl;
+    cout << "Secuencia B: " << alignments.begin()->sequenceB << endl;
+    cout << "Score: " << alignments.begin()->score << endl;
+    cout<< "PESO: " << alignments.begin()->peso << endl << endl;
+
+}
 
 
 int main() {
