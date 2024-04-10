@@ -202,10 +202,19 @@ Alignment Needleman(string CadenaA, int tamA, string CadenaB,  int tamB) {
 
 
 
-int Matriz_MSA[10][10];
+
 /*MSA Estrella--------------------*/
 void MSA_Estrella(vector<string> cadenas){
+  int Matriz_MSA[cadenas.size()][cadenas.size()];
+  for(int i=0; i<cadenas.size(); i++){
+   // cout<< "\nSecuencia " << i << ": " << cadenas[i] << endl;
+    for(int j = 0; j< cadenas.size(); j++){
+     
+      Matriz_MSA[i][j] = 0;
+    }
+  }
 
+  
   for(int i=0; i<cadenas.size()-1; i++){
    // cout<< "\nSecuencia " << i << ": " << cadenas[i] << endl;
     for(int j = i+1; j< cadenas.size(); j++){
@@ -219,10 +228,11 @@ void MSA_Estrella(vector<string> cadenas){
   cout<<"Matriz de scores:\n";
   for(int i=0; i<cadenas.size(); i++)
     {
+      //cout<<"Secuencia y scores:\n";
       for(int j=0; j< cadenas.size(); j++){
         cout << Matriz_MSA[i][j] << "\t";
       }
-      cout<<endl;
+      cout<<endl<<endl;
     }
 
   cout<<"Suma de scores:\n";
@@ -246,11 +256,11 @@ void MSA_Estrella(vector<string> cadenas){
   }
   cout<<endl<< Secuencias_suma[SecuenciaMayorPos]<<endl;
   cout<< "Secuencia "<<SecuenciaMayorPos +1<<" con mayor score: " << cadenas[SecuenciaMayorPos] <<endl;
-  
+
   cout<<"\nCombinaciones finales MSA:\n";
     //Obetener las secuencia mas larga
     string SecuenciaOptimaLarga ="";
-  
+
   for(int j = 0; j< cadenas.size(); j++){
     if(j != SecuenciaMayorPos)
     {
@@ -282,8 +292,30 @@ void MSA_Estrella(vector<string> cadenas){
 
 
 int main() {
-  vector<string> secuencias = {"TGCCGGCAGGGATGTGCTTG","TGCTTGCAGTTTGCTTTCACTGATGGA","GTTTAGGTTTTTGCTTATGCAGCATCCA","TCAGGTACCCTGACCTTCTCTGAAC","GGAAAAGCACAGAACTGGCCAACA","GTGGGTTGTAAAGGTCCCAAATGGT","GCCAGTTGGTTGATTTCCACCTCCA","TGCCTTGGGTCCCTCTGACTGG","ACCCCCGACATGCAGAAGCTG","GTGGTGCATTGATGGAAGGAAGCA","TGACGTGTCTGCTCCACTTCCA","AGTGAGAGGAGCTCCCAGGGC"};
-  MSA_Estrella(secuencias);
+  
+  
+
+  vector<string> A_BRCA1 = {"TGCCGGCAGGGATGTGCTTG","TGCTTGCAGTTTGCTTTCACTGATGGA"};
+
+  vector<string> B_BRCA1 = {"GTTTAGGTTTTTGCTTATGCAGCATCCA","TCAGGTACCCTGACCTTCTCTGAAC"};
+
+    vector<string> C_BRCA1 = {"GGAAAAGCACAGAACTGGCCAACA","GTGGGTTGTAAAGGTCCCAAATGGT"};
+
+    vector<string> D_BRCA1 = {"GCCAGTTGGTTGATTTCCACCTCCA","TGCCTTGGGTCCCTCTGACTGG"};
+
+  vector<string> E_BRCA1 = {"ACCCCCGACATGCAGAAGCTG","GTGGTGCATTGATGGAAGGAAGCA"};
+
+  vector<string> F_BRCA1 = {"TGACGTGTCTGCTCCACTTCCA","AGTGAGAGGAGCTCCCAGGGC"};
+
+  vector<string> secuencias_directas = {A_BRCA1[0], B_BRCA1[0], C_BRCA1[0], D_BRCA1[0], E_BRCA1[0], F_BRCA1[0]};
+
+  vector<string> secuencias_reversas = {A_BRCA1[1], B_BRCA1[1], C_BRCA1[1], D_BRCA1[1], E_BRCA1[1], F_BRCA1[1]};
+
+  vector<string> secuencias_mixtas = {A_BRCA1[0], A_BRCA1[1], B_BRCA1[0], B_BRCA1[1], C_BRCA1[0], C_BRCA1[1], D_BRCA1[0], D_BRCA1[1], E_BRCA1[0], E_BRCA1[1], F_BRCA1[0], F_BRCA1[1]};
+  
+  MSA_Estrella(secuencias_mixtas);
+
+
 }
 
 
